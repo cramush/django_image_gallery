@@ -1,0 +1,13 @@
+{% extends 'gallery/home_base.html'%}
+
+    {% block home_1 %}
+    {% for picture in data %}
+        <div>
+            <p><a href='image/{{ picture }}'>{{ picture }}</a>
+        </div>
+    {% endfor %}
+    {% endblock home_1 %}
+
+    {% block home_2 %}
+    <p><a href='/clear'>clear data</a></p>
+    {% endblock home_2 %}

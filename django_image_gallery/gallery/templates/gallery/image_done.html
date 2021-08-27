@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>image</title>
+</head>
+<body>
+    <p><a href='/'>Назад к списку</a><H1>{{ data.url }}</H1>
+    <form method='post' enctype='multipart/form-data'>
+        <p>Ширина<br><input type='text' name='Width'>
+        <p>Высота<br><input type='text' name='Height'>
+        <p><button type='submit'>Отправить</button></form>
+    <img src='{{ data.domain }}media/resized/{{ data.width }}*{{ data.height }}-{{ data.url }}'>
+</body>
+</html>
