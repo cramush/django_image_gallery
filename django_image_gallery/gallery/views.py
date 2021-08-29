@@ -31,17 +31,23 @@ def add(request):
         return render(request, "gallery/add_error_2.html")
 
     else:
-        if request.method == "POST" and request.FILES:  # add validation
-            Images.objects.create(image=request.FILES["myfile"])
+        if request.method == "POST" and request.FILES:
             file = request.FILES['myfile']
             url = file.name
-            return HttpResponseRedirect(f"/image/{url}")
+            format_list = [".raw", ".jpeg", ".jpg", ".gif", ".png", ".tiff", ".bmp"]
+            for f in format_list:
+                if f in url.lower():
+                    Images.objects.create(image=request.FILES["myfile"])
+                    return HttpResponseRedirect(f"/image/{url}")
+
+            else:
+                return render(request, "gallery/add_error_3.html")
+
 
         elif request.method == "POST" and request.POST.get("link"):
             link = request.POST.get("link")
             url_list = link.split("/")[-1:]
             url = url_list[0]
-            print(url)
             format_list = [".raw", ".jpeg", ".jpg", ".gif", ".png", ".tiff", ".bmp"]
             for f in format_list:
                 if f in url.lower():
