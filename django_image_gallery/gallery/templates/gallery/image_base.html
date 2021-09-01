@@ -5,13 +5,13 @@
     <title>image</title>
 </head>
 <body>
-    <p><a href='/'>Назад к списку</a><H1>{{ data.url }}</H1>
+    <p><a href='/gallery'>Назад к списку</a><H1>{{ data.url }}</H1>
     <form method='post' enctype='multipart/form-data'>
         <p>Ширина<br><input type='text' name='Width'>
         <p>Высота<br><input type='text' name='Height'>
         <p><button type='submit'>Отправить</button></form>
     {% block image %}
     {% endblock image %}
-    <p><img src='{{ data.domain }}media/images/{{ data.url }}'>
+
 </body>
 </html>

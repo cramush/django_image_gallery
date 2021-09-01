@@ -12,14 +12,17 @@ import glob
 BASE_DIR = os.path.dirname(os.path.abspath("media"))
 
 
-def home(request):
+def gallery(request):
+    files = glob.glob(f"{BASE_DIR}/media/resized/*")
+    for file in files:
+        os.remove(file)
+
     data = Images.objects.all()
-    domain = request.build_absolute_uri()
-    request.session["domain"] = domain
     if len(data) == 0:
-        return render(request, "gallery/home_if_len_0.html")
+        return render(request, "gallery/gallery_if_len_0.html")
+
     else:
-        return render(request, "gallery/home.html", {"data": data})
+        return render(request, "gallery/gallery.html", {"data": data})
 
 
 @csrf_exempt
@@ -72,24 +75,35 @@ def add(request):
 def image(request, url):
     if not os.path.exists(f"{BASE_DIR}/media/resized/"):
         os.makedirs(f"{BASE_DIR}/media/resized/", exist_ok=True)
-    files = glob.glob(f"{BASE_DIR}/media/resized/*")
-    for file in files:
-        os.remove(file)
+
     domain = request.session["domain"]
+    domain = str(domain)[:-7]
 
     if request.method == "POST" and not request.POST.get('Width') and not request.POST.get('Height'):
+        if len(os.listdir(f"{BASE_DIR}/media/resized")) == 0:
 
-        data = {
-            "domain": domain,
-            "url": url
-        }
-        return render(request, "gallery/image_error_1.html", {"data": data})
+            data = {
+                "domain": domain,
+                "url": url
+            }
+            return render(request, "gallery/image_error_1.html", {"data": data})
+
+        else:
+            file = glob.glob(f"{BASE_DIR}/media/resized/*")
+            file = file[0]
+            url = file.split("/")[-1]
+
+            data = {
+                "domain": domain,
+                "url": url
+            }
+            return render(request, "gallery/image_error_2.html", {"data": data})
 
     if request.method == "POST":
         width = request.POST.get('Width')
         height = request.POST.get('Height')
         input_image_path = BASE_DIR + f"/media/images/{url}"
-        output_image_path = BASE_DIR + f"/media/resized/{width}*{height}-{url}"
+        output_image_path = BASE_DIR + f"/media/resized/{url}"
 
         original_image = Image.open(input_image_path)
         w, h = original_image.size
@@ -104,10 +118,14 @@ def image(request, url):
         original_image.thumbnail(max_size, Image.ANTIALIAS)
         original_image.save(output_image_path)
 
+        files = glob.glob(f"{BASE_DIR}/media/resized/*")
+        last_resized = BASE_DIR + f"/media/resized/{url}"
+        for file in files:
+            if file != last_resized:
+                os.remove(file)
+
         data = {
             "domain": domain,
-            "width": width,
-            "height": height,
             "url": url
         }
         return render(request, "gallery/image_done.html", {"data": data})
@@ -116,7 +134,7 @@ def image(request, url):
         "domain": domain,
         "url": url
     }
-    return render(request, "gallery/image_base.html", {"data": data})
+    return render(request, "gallery/image_not_resized.html", {"data": data})
 
 
 def clear(request):
@@ -132,4 +150,4 @@ def clear(request):
     for file in files:
         os.remove(file)
 
-    return HttpResponseRedirect("/")
+    return HttpResponseRedirect("/gallery")
