@@ -3,12 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>gallery</title>
+    <style>
+   /*body {*/
+   /* margin-right: 25%; !* Отступ справа *!*/
+   /* margin-left: 10%; !* Отступ слева *!*/
+   /*}*/
+   .panel {
+    background: #06404d; /* Цвет фона */
+    color: #f0f8ff; /* Цвет текста */
+    padding: 10px; /* Поля вокруг текста */
+    text-align: justify; /* Выравнивание по ширине */
+   }
+  </style>
 </head>
 <body>
+<div class="panel">
+    <p>User
+    <a>|</a>
+    <a href='/' style="color: aliceblue">Логаут</a></p>
+</div>
+    <p><a href='/'>Главная</a>
+    <a>|</a>
+    <a href='/add'>Добавить изображение</a></p>
     <H1>Список изображений</H1>
     {% block home_1 %}
     {% endblock home_1 %}
-    <a href='/add'>Добавить изображение</a>
     {% block home_2 %}
     {% endblock home_2 %}
 </body>

@@ -1,8 +1,13 @@
 from urllib.request import urlopen
+
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
 from .models import Images
 from django.views.decorators.csrf import csrf_exempt
 from PIL import Image
@@ -10,6 +15,18 @@ import os
 import glob
 
 BASE_DIR = os.path.dirname(os.path.abspath("media"))
+
+
+def register(request):
+    return HttpResponse("Регистрация")
+
+
+def login(request):
+    return HttpResponse("Вход")
+
+
+def home(request):
+    return render(request, "gallery/home_base.html")
 
 
 def gallery(request):
@@ -151,3 +168,19 @@ def clear(request):
         os.remove(file)
 
     return HttpResponseRedirect("/gallery")
+
+
+# class RegisterUser(CreateView):
+#     form_class = UserCreationForm
+#     template_name = "gallery/register.html"
+#     success_url = reverse_lazy("login")
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         c_def = self.get_user_context(title="Регистрация")
+#         return dict(list(context.items()) + list(c_def.items()))
+#
+#     def form_valid(self, form):
+#         user = form.save()
+#         login(self.request, user)
+#         return HttpResponseRedirect('home')

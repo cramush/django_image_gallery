@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>image</title>
+    <style>
+   .panel {
+    background: #06404d; /* Цвет фона */
+    color: #f0f8ff; /* Цвет текста */
+    padding: 10px; /* Поля вокруг текста */
+    text-align: justify; /* Выравнивание по ширине */
+   }
+  </style>
 </head>
 <body>
+<div class="panel">
+    <p>User
+    <a>|</a>
+    <a href='/' style="color: aliceblue">Логаут</a></p>
+</div>
     <p><a href='/gallery'>Назад к списку</a><H1>{{ data.url }}</H1>
     <form method='post' enctype='multipart/form-data'>
         <p>Ширина<br><input type='text' name='Width'>
